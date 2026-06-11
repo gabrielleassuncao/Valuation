@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YSERV | Valuation Canvas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Galindo&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <h1>YSERV</h1>
+      <span>Valuation Canvas</span>
+    </div>
+
+    <nav>
+      <a href="#simulador">Simulador</a>
+      <a href="#resultado">Resultado</a>
+      <a href="#justificativa">Justificativa</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="badge">Startup em Estágio de Ideação</span>
+        <h2>Valuation Canvas YSERV</h2>
+        <h3>Avaliação Financeira e Potencial de Crescimento da Plataforma</h3>
+        <p>
+          O YSERV conecta clientes e prestadores de serviços em uma única plataforma digital,
+          simplificando a contratação de profissionais de forma rápida e segura.
+          Este valuation foi construído com base nas projeções financeiras, crescimento esperado
+          da base de usuários e potencial de expansão do mercado brasileiro de serviços sob demanda.
+          Utilize os controles para analisar como diferentes cenários impactam o
+          <strong>Enterprise Value</strong> e o <strong>Equity Value</strong> do negócio.
+        </p>
+      </div>
+
+      <div class="hero-card">
+        <span>Equity Value estimado</span>
+        <strong id="heroEquity">R$ 0,00</strong>
+        <p>Valuation estimado com base nas premissas financeiras do YSERV.</p>
+      </div>
+    </section>
+
+    <section class="layout" id="simulador">
+      <aside class="premissas">
+        <div class="premissas-head">
+          <div>
+            <span class="eyebrow">Simulador</span>
+            <h2>Premissas Financeiras do YSERV</h2>
+          </div>
+          <button id="resetBtn" type="button">Resetar Simulador</button>
+        </div>
+
+        <div class="input-block">
+          <div class="input-title">
+            <label for="revenue">Receita Anual Projetada (Ano 1)</label>
+            <strong id="revenueText">R$ 1,0K</strong>
+          </div>
+          <input id="revenue" type="range" min="10000" max="500000" step="100" value="25000">
+          <p>
+            Baseada na projeção de crescimento inicial da plataforma e na aquisição de clientes ao longo do primeiro ano.
+          </p>
+        </div>
+
+        <div class="input-block">
+          <div class="input-title">
+            <label for="growth">Taxa de Crescimento da Plataforma</label>
+            <strong id="growthText">50%</strong>
+          </div>
+          <input id="growth" type="range" min="20" max="200" step="5" value="80">
+          <p>
+            Representa a expansão da base de usuários e o aumento das transações realizadas na plataforma.
+          </p>
+        </div>
+
+        <div class="input-block">
+          <div class="input-title">
+            <label for="margin">Margem de FCF (Ano 5)</label>
+            <strong id="marginText">20%</strong>
+          </div>
+          <input id="margin" type="range" min="10" max="60" step="1" value="30">
+          <p>Margem operacional líquida quando a startup estabilizar o caixa no Ano 5.</p>
+        </div>
+
+        <div class="input-block">
+          <div class="input-title">
+            <label for="discount">Taxa de Desconto (Risco)</label>
+            <strong id="discountText">30%</strong>
+          </div>
+          <input id="discount" type="range" min="20" max="60" step="1" value="45">
+          <p>Startups em estágio inicial usam taxas de 25% a 50% devido ao risco.</p>
+        </div>
+
+        <div class="input-block">
+          <div class="input-title">
+            <label for="perpetual">Crescimento Perpétuo (g)</label>
+            <strong id="perpetualText">3,5%</strong>
+          </div>
+          <input id="perpetual" type="range" min="0" max="5" step="0.1" value="3">
+          <p>Crescimento de longo prazo alinhado com PIB e inflação.</p>
+        </div>
+
+        <div class="money-grid">
+          <label>
+            Caixa Atual
+            <div class="money-field">
+              <span>R$</span>
+              <input id="cash" type="number" value="10000" min="0" step="1000">
+            </div>
+          </label>
+
+          <label>
+            Mútuos (Dívida)
+            <div class="money-field">
+              <span>R$</span>
+              <input id="debt" type="number" value="0" min="0" step="1000">
+            </div>
+          </label>
+        </div>
+      </aside>
+
+      <section class="steps" id="resultado">
+        <article class="step-card">
+          <span>PASSO 1</span>
+          <h2>Fluxo de Caixa Descontado (FCD)</h2>
+          <p>
+            Estimativa dos fluxos de caixa futuros gerados pelo YSERV durante os primeiros cinco anos de operação.
+          </p>
+          <div class="formula">PV = Σ FCF<sub>t</sub> / (1 + r)<sup>t</sup></div>
+          <div class="result-line">
+            <small>Soma do Valor Presente (Anos 1-5)</small>
+            <strong id="pvFlows">R$ 0,00</strong>
+          </div>
+        </article>
+
+        <article class="step-card">
+          <span>PASSO 2</span>
+          <h2>Terminal Value (TV)</h2>
+          <p>
+            Representa o valor econômico que o YSERV poderá gerar após atingir maturidade operacional.
+          </p>
+          <div class="formula">TV = FCF<sub>5</sub> × (1 + g) / (r - g)</div>
+          <div class="two-results">
+            <div>
+              <small>TV Bruto (Futuro)</small>
+              <strong id="tvFuture">R$ 0,00</strong>
+            </div>
+            <div>
+              <small>TV a Valor Presente</small>
+              <strong id="tvPresent">R$ 0,00</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="step-card">
+          <span>PASSO 3</span>
+          <h2>Enterprise Value (EV)</h2>
+          <p>
+            O Enterprise Value representa o valor total da operação do YSERV, independentemente da sua estrutura de capital.
+          </p>
+          <div class="formula">EV = PV<sub>Fluxos</sub> + PV<sub>TV</sub></div>
+          <div class="result-line">
+            <small>Valor Operacional total (Enterprise Value)</small>
+            <strong id="enterpriseValue">R$ 0,00</strong>
+          </div>
+        </article>
+
+        <article class="step-card equity-card">
+          <span>PASSO 4</span>
+          <h2>Equity Value</h2>
+          <p>
+            O Equity Value representa o valor econômico pertencente aos sócios após considerar caixa disponível e eventuais obrigações financeiras.
+          </p>
+          <div class="formula">Equity = EV + Caixa - Dívida</div>
+          <div class="result-line">
+            <small>Valor do Patrimônio Líquido (Equity)</small>
+            <strong id="equityValue">R$ 0,00</strong>
+          </div>
+        </article>
+      </section>
+    </section>
+
+    <section class="analysis" id="justificativa">
+      <article class="panel">
+        <h2>Impacto do Crescimento de Longo Prazo</h2>
+        <p id="tvMessage">
+          O Terminal Value representa parte relevante do valuation total.
+        </p>
+        <div class="progress">
+          <div id="tvBar"></div>
+        </div>
+        <strong id="tvShare">0%</strong>
+      </article>
+
+      <article class="panel">
+        <h2>Projeção e Distribuição de Valor</h2>
+
+        <div class="summary-grid">
+          <div>
+            <span>Período Explícito (Anos 1-5)</span>
+            <strong id="explicitTotal">R$ 0,00</strong>
+          </div>
+          <div>
+            <span>Valor Terminal (Perpetuidade)</span>
+            <strong id="terminalTotal">R$ 0,00</strong>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Ano</th>
+                <th>Receita</th>
+                <th>Margem FCF</th>
+                <th>FCF</th>
+                <th>Valor Presente</th>
+              </tr>
+            </thead>
+            <tbody id="projectionTable"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel explanation">
+        <h2>Metodologia Utilizada</h2>
+
+        <div class="explanation-grid">
+          <div>
+            <h3>1. Projetamos o crescimento da plataforma</h3>
+            <p>
+              Estimamos a evolução da receita com base no aumento da base de clientes,
+              expansão da rede de prestadores e crescimento das transações realizadas pelo YSERV.
+            </p>
+          </div>
+
+          <div>
+            <h3>2. Estimamos a geração de caixa</h3>
+            <p>
+              A partir das receitas projetadas, calculamos o potencial de geração de caixa
+              da plataforma considerando ganhos de escala e aumento da eficiência operacional.
+            </p>
+          </div>
+
+          <div>
+            <h3>3. Ajustamos os riscos do negócio</h3>
+            <p>
+              Como o YSERV está em estágio inicial, aplicamos uma taxa de desconto compatível
+              com startups para refletir incertezas relacionadas ao mercado, crescimento e execução.
+            </p>
+          </div>
+
+          <div>
+            <h3>4. Calculamos o valor da startup</h3>
+            <p>
+              Somamos os fluxos de caixa futuros descontados e o valor terminal para obter
+              o Enterprise Value. Em seguida, consideramos caixa e dívidas para determinar
+              o Equity Value, que representa o valor econômico dos sócios.
+            </p>
+          </div>
+        </div>
+      </article>
+    </section>
+    <section class="analysis">
+      <article class="panel">
+        <h2>Mercado e Potencial do YSERV</h2>
+
+        <div class="summary-grid">
+          <div>
+            <span>Problema</span>
+            <strong>Contratação insegura e descentralizada de serviços</strong>
+          </div>
+
+          <div>
+            <span>Solução</span>
+            <strong>Marketplace digital que conecta clientes e prestadores verificados</strong>
+          </div>
+
+          <div>
+            <span>Público-Alvo</span>
+            <strong>Clientes residenciais e profissionais autônomos</strong>
+          </div>
+
+          <div>
+            <span>Modelo de Receita</span>
+            <strong>Comissão sobre transações realizadas</strong>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <strong>YSERV • Valuation Canvas</strong>
+    <p>Simulador interativo de valuation por FCD para apresentação da empresa.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
